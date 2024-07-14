@@ -5,6 +5,41 @@
     <title>Axinom DRM quick start demo player</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.2.1/shaka-player.compiled.debug.js"></script>
+    <!-- <script type="text/javascript" src="http://localhost:8000/dist/shaka-player.compiled.debug.js"></script> -->
+    <!-- <script>
+         COMPILED_JS = [
+         // The compiled library, with UI.
+         '../dist/shaka-player.ui.js',
+         // The compiled demo.
+         '../dist/demo.compiled.js',
+         ];
+         COMPILED_DEBUG_JS = [
+         // The compiled library, with UI, debug mode.
+         '../dist/shaka-player.ui.debug.js',
+         // The compiled demo.
+         '../dist/demo.compiled.debug.js',
+         ];
+         UNCOMPILED_JS = [
+         // Bootstrap the Shaka Player library through the Closure library.
+         '../node_modules/google-closure-library/closure/goog/base.js',
+         '../dist/deps.js',
+         // This is required for goog.asserts.
+         '../lib/debug/asserts.js',
+         // Compiled into Shaka Player, but outside of the Closure deps system.
+         '../node_modules/eme-encryption-scheme-polyfill/index.js',
+         // This file contains goog.require calls for all exported library classes.
+         '../shaka-player.uncompiled.js',
+         // Enable less, the CSS pre-processor.
+         '../node_modules/less/dist/less.js',
+         // These are the individual parts of the demo app.
+         'common/asset.js',
+         'common/assets.js',
+         'demo_uncompiled.js',
+         ];
+         </script>
+
+         <script defer src="http://localhost:8000/demo/load.js"></script> -->
+
     <style>
         video#videoPlayer {
             width: 640px;
@@ -85,7 +120,7 @@
                         player.configure({
                             drm: {
                                 servers: {
-                                    'com.widevine.alpha': 'https://drm-widevine-licensing.axprod.net/AcquireLicense',
+                                    'com.widevine.alpha': 'https://license.uat.widevine.com/cenc/getcontentkey/widevine_test',
                                     'com.microsoft.playready': 'https://drm-playready-licensing.axprod.net/AcquireLicense',
                                     'com.apple.fps': 'https://drm-fairplay-licensing.axprod.net/AcquireLicense'
                                 },
@@ -96,20 +131,20 @@
                                 }
                             }
                         });
-                       
+
                         // Add the "X-AxDRM-Message" header, containing the license token, to the header
                         // of all license requests.
-                        player.getNetworkingEngine().registerRequestFilter(function(type, request) {
-                            if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
-                                // This is the specific header name and value the server wants:
-                                request.headers['X-AxDRM-Message'] = licenseToken;
-                            }
+                      /* player.getNetworkingEngine().registerRequestFilter(function(type, request) {
+                       *     if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
+                       *         // This is the specific header name and value the server wants:
+                       *         request.headers['X-AxDRM-Message'] = licenseToken;
+                       *     }
 
-                        });
+                       * }); */
 
-                        // Try to load a manifest. This is an asynchronous process.
-                        player.load(video.url).then(function() {
-                            // This runs if the asynchronous load is successful.
+                      // Try to load a manifest. This is an asynchronous process.
+                      player.load(video.url).then(function() {
+                        // This runs if the asynchronous load is successful.
                             // onError() is executed if the asynchronous load fails.
                             console.log('The video has now been loaded!');
                         }).catch(onError);
